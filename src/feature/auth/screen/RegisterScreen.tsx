@@ -1,0 +1,7 @@
+const RegisterScreen = () => {
+    return (
+        <>
+            
+            </>
+    )
+}

@@ -4,6 +4,7 @@ import {useState} from "react";
 import {useForm, SubmitHandler, Controller} from 'react-hook-form';
 import LoginFormData from "../interface/LoginFormData";
 import { useNavigation } from '@react-navigation/native';
+import {useAuth} from "../context/AuthContext";
 
 
 export default function LoginScreen() {
@@ -13,10 +14,17 @@ export default function LoginScreen() {
     const { control, handleSubmit, formState: {errors}} = useForm<LoginFormData>();
     const navigation = useNavigation();
 
-    const onSubmit = (data: LoginFormData) => {
-        console.log("login: ", data);
-        alert('Enviado');
-    }
+    const { login } = useAuth();
+
+    const onSubmit = async (data: LoginFormData) => {
+        try {
+            await login(data.email, data.password);
+            alert('Inicio de sesión exitoso');
+        } catch (error: any) {
+            console.error("Error en login:", error.message);
+            alert("Error al iniciar sesión: " + error.message);
+        }
+    };
 
     return (
         <View style={{flexGrow: 1, justifyContent: 'center', backgroundColor: theme.colors.background}}>

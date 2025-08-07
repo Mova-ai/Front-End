@@ -32,6 +32,10 @@ yarn-error.*
 
 # local env files
 .env*.local
-
+.env
+.dotenv
 # typescript
 *.tsbuildinfo
+
+# JetBrains IDEs (Android Studio, WebStorm, IntelliJ)
+.idea/

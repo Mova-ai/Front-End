@@ -1,9 +1,11 @@
-import {Image, ScrollView, TouchableOpacity, View} from "react-native";
+import {Alert, Image, ScrollView, TouchableOpacity, View} from "react-native";
 import {Button, IconButton, Text, TextInput, useTheme} from "react-native-paper";
 import {Controller, useForm} from "react-hook-form";
 import LoginFormData from "../interface/LoginFormData";
 import {useState} from "react";
 import { useNavigation } from "@react-navigation/native";
+import {createUserWithEmailAndPassword,updateProfile} from "firebase/auth";
+import {auth} from "../../../firebase/firebase";
 
 
 const RegisterScreen = () => {
@@ -15,9 +17,26 @@ const RegisterScreen = () => {
     const { control, handleSubmit, formState: {errors}} = useForm<any>();
     const navigation = useNavigation();
 
-    const onSubmit = (data: LoginFormData) => {
-        console.log("login: ", data);
-    }
+    const onSubmit = async (data: LoginFormData) => {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+            const user = userCredential.user;
+
+
+            if (auth.currentUser) {
+                await updateProfile(auth.currentUser, {
+                    displayName: data.name,
+                });
+            }
+
+            console.log("Usuario registrado:", user);
+            Alert.alert("Registro exitoso", "Tu cuenta ha sido creada correctamente.");
+        } catch (error: any) {
+            console.error("Error al registrar:", error.message);
+            Alert.alert("Error", error.message);
+        }
+    };
+
 
     return (
         <ScrollView contentContainerStyle={{flex: 1, justifyContent: 'center', backgroundColor: theme.colors.background}}>
@@ -71,6 +90,69 @@ const RegisterScreen = () => {
                                     errors.name
                                         ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>
                                         : null
+                                }
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name="email"
+                        rules={{
+                            required: 'El email es obligatorio',
+                            pattern: {
+                                value: /\S+@\S+\.\S+/,
+                                message: 'Email inválido',
+                            },
+                        }}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <TextInput
+                                label="Email"
+                                mode="outlined"
+                                keyboardType="email-address"
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                                error={!!errors.email}
+                                style={{ marginBottom: 16, width: '100%' }}
+                                right={
+                                    errors.email
+                                        ? null
+                                        : value
+                                            ? <TextInput.Icon icon="check" color={theme.colors.success} />
+                                            : null
+                                }
+                            />
+                        )}
+                    />
+
+                    {/* Contraseña */}
+                    <Controller
+                        control={control}
+                        name="password"
+                        rules={{
+                            required: 'La contraseña es obligatoria',
+                            minLength: {
+                                value: 6,
+                                message: 'Mínimo 6 caracteres',
+                            },
+                        }}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <TextInput
+                                label="Contraseña"
+                                mode="outlined"
+                                secureTextEntry
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                                error={!!errors.password}
+                                style={{ marginBottom: 16, width: '100%' }}
+                                right={
+                                    errors.password
+                                        ? null
+                                        : value
+                                            ? <TextInput.Icon icon="check" color={theme.colors.success} />
+                                            : null
                                 }
                             />
                         )}

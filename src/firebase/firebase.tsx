@@ -2,12 +2,13 @@ import {initializeApp} from 'firebase/app';
 import {getAuth} from 'firebase/auth';
 
 const firebaseConfig = {
-    apiKey: "<KEY>",
+    apiKey: "AIzaSyCdj0TJYFDbzvYHeqyNnf-kXBrt4e4M3wk",
     authDomain: "mova-2021.firebaseapp.com",
     projectId: "mova-2021",
-    storageBucket: "mova-2021.appspot.com",
-    messagingSenderId: "1018442115919",
-    appId: "1:1018442115919:web:177117271217771217711"
+    storageBucket: "mova-2021.firebasestorage.app",
+    messagingSenderId: "220317421379",
+    appId: "1:220317421379:web:08884a53e94825fe98a9f6",
+    measurementId: "G-ECMP4Y8T9K"
 };
 
 const app = initializeApp(firebaseConfig);

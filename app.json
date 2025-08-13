@@ -15,16 +15,17 @@
     "ios": {
       "supportsTablet": true,
       "googleServicesFile": "./GoogleService-Info.plist",
-      "bundleIdentifier": "com.mova.firebase"
+      "bundleIdentifier": "com.mova"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff",
         "googleServicesFile": "./google-services.json",
-        "package": "com.mova.firebase"
+        "package": "com.mova"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.mova"
     },
     "web": {
       "favicon": "./assets/favicon.png"

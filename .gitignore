@@ -36,12 +36,17 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-
 # Firebase Credentials
 GoogleService-Info.plist
 google-services.json
 
-
 #IDE
 .idea/
 .idea/*
+
+#Plataforms
+ios/
+android/
+build/
+
+

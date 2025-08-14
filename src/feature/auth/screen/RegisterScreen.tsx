@@ -4,6 +4,8 @@ import {Controller, useForm} from "react-hook-form";
 import LoginFormData from "../interface/LoginFormData";
 import {useState} from "react";
 import { useNavigation } from "@react-navigation/native";
+import {createUserWithEmailAndPassword, getAuth} from "@react-native-firebase/auth";
+
 
 
 const RegisterScreen = () => {
@@ -17,6 +19,16 @@ const RegisterScreen = () => {
 
     const onSubmit = (data: LoginFormData) => {
         console.log("login: ", data);
+        const user = getAuth()
+            user.createUserWithEmailAndPassword("moid@gmail.com","dddyyyyy")
+    //    createUserWithEmailAndPassword(getAuth(),"eep@gmail.com", "tassword")
+            .then(r  => {
+
+                console.log("login adentro: ", r);
+            })
+            .catch(e => {
+                console.log(e);
+            })
     }
 
     return (

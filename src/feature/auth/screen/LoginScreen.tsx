@@ -4,17 +4,28 @@ import {useState} from "react";
 import {useForm, SubmitHandler, Controller} from 'react-hook-form';
 import LoginFormData from "../interface/LoginFormData";
 import { useNavigation } from '@react-navigation/native';
+import { getAuth, createUserWithEmailAndPassword } from '@react-native-firebase/auth';
 
 
 export default function LoginScreen() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
     const theme = useTheme();
     const { control, handleSubmit, formState: {errors}} = useForm<LoginFormData>();
     const navigation = useNavigation();
 
     const onSubmit = (data: LoginFormData) => {
+
         console.log("login: ", data);
+        const {email, password} = data;
+
+        createUserWithEmailAndPassword(getAuth(),email,password)
+            .then(() => {
+                console.log("login adentro: ", data);
+            })
+        .catch((error) => {
+            console.log(error);
+        })
         alert('Enviado');
     }
 

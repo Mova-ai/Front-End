@@ -1,0 +1,99 @@
+{
+  "name": "mova",
+  "slug": "mova",
+  "version": "1.0.0",
+  "orientation": "portrait",
+  "icon": "./assets/icon.png",
+  "userInterfaceStyle": "light",
+  "platforms": [
+    "ios",
+    "android"
+  ],
+  "newArchEnabled": true,
+  "splash": {
+    "image": "./assets/splash-icon.png",
+    "resizeMode": "contain",
+    "backgroundColor": "#ffffff"
+  },
+  "ios": {
+    "supportsTablet": true,
+    "bundleIdentifier": "com.demont.x27.mova",
+    "googleServicesFile": "./GoogleService-Info.plist",
+    "infoPlist": {
+      "UIBackgroundModes": [
+        "fetch",
+        "remote-notification"
+      ]
+    }
+  },
+  "android": {
+    "adaptiveIcon": {
+      "foregroundImage": "./assets/adaptive-icon.png",
+      "backgroundColor": "#ffffff"
+    },
+    "edgeToEdgeEnabled": true,
+    "package": "com.demont.x27.mova",
+    "googleServicesFile": "./google-services.json",
+    "permissions": [
+      "INTERNET",
+      "VIBRATE",
+      "RECEIVE_BOOT_COMPLETED",
+      "com.google.android.c2dm.permission.RECEIVE",
+      "android.permission.WAKE_LOCK"
+    ]
+  },
+  "web": {
+    "favicon": "./assets/favicon.png"
+  },
+  "extra": {
+    "eas": {
+      "projectId": "e0ebb1a3-6a0e-40ce-aac3-5b47f0851cf7"
+    }
+  },
+  "plugins": [
+    [
+      "@react-native-firebase/app",
+      {}
+    ],
+    [
+      "@react-native-firebase/messaging",
+      {
+        "ios": {
+          "messagingAutoInitEnabled": true
+        }
+      }
+    ],
+    "expo-dev-client"
+  ],
+  "owner": "demont.27",
+  "_internal": {
+    "isDebug": false,
+    "projectRoot": "/Users/jesussantiago/Programación/Mova/Front-End",
+    "dynamicConfigPath": {},
+    "staticConfigPath": "/Users/jesussantiago/Programación/Mova/Front-End/app.json",
+    "packageJsonPath": "/Users/jesussantiago/Programación/Mova/Front-End/package.json",
+    "pluginHistory": {
+      "@react-native-firebase/app": {
+        "name": "@react-native-firebase/app",
+        "version": "23.0.0"
+      },
+      "@react-native-firebase/messaging": {
+        "name": "@react-native-firebase/messaging",
+        "version": "23.0.0"
+      },
+      "expo-dev-client": {
+        "name": "expo-dev-client",
+        "version": "5.2.4"
+      },
+      "expo-dev-menu": {
+        "name": "expo-dev-menu",
+        "version": "6.1.14"
+      },
+      "expo-dev-launcher": {
+        "name": "expo-dev-launcher",
+        "version": "5.1.16"
+      }
+    }
+  },
+  "sdkVersion": "53.0.0"
+}

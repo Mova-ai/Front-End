@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "platforms": ["ios", "android"],
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
@@ -15,17 +16,16 @@
     "ios": {
       "supportsTablet": true,
       "googleServicesFile": "./GoogleService-Info.plist",
-      "bundleIdentifier": "com.mova"
+      "bundleIdentifier": "com.mova.ios"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff",
-        "googleServicesFile": "./google-services.json",
-        "package": "com.mova"
+        "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
-      "package": "com.mova"
+      "googleServicesFile": "./google-services.json",
+      "package": "com.mova.android",
+      "edgeToEdgeEnabled": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -33,11 +33,18 @@
     "plugins": [
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
+      "@react-native-firebase/crashlytics",
       [
         "expo-build-properties",
         {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "buildToolsVersion": "35.0.0"
+          },
           "ios": {
-            "useFrameworks": "static"
+            "useFrameworks": "static",
+            "deploymentTarget": "15.1"
           }
         }
       ]

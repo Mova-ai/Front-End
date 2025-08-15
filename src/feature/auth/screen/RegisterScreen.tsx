@@ -1,34 +1,40 @@
-import {Image, ScrollView, TouchableOpacity, View} from "react-native";
+import {Alert, Image, ScrollView, TouchableOpacity, View} from "react-native";
 import {Button, IconButton, Text, TextInput, useTheme} from "react-native-paper";
 import {Controller, useForm} from "react-hook-form";
-import LoginFormData from "../interface/LoginFormData";
-import {useState} from "react";
 import { useNavigation } from "@react-navigation/native";
 import {createUserWithEmailAndPassword, getAuth} from "@react-native-firebase/auth";
 
 
+type RegisterFormData = {
+    email: string;
+    password: string;
+};
+
 
 const RegisterScreen = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
+
 
     const theme = useTheme();
     const { control, handleSubmit, formState: {errors}} = useForm<any>();
     const navigation = useNavigation();
 
-    const onSubmit = (data: LoginFormData) => {
-        console.log("login: ", data);
-        const user = getAuth()
-            user.createUserWithEmailAndPassword("moid@gmail.com","dddyyyyy")
-    //    createUserWithEmailAndPassword(getAuth(),"eep@gmail.com", "tassword")
-            .then(r  => {
-
-                console.log("login adentro: ", r);
-            })
-            .catch(e => {
-                console.log(e);
-            })
+    const onSubmit = async (data: RegisterFormData) => {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(getAuth(), data.email, data.password);
+            console.log('Usuario registrado:', userCredential.user);
+            Alert.alert('Registro exitoso', 'Tu cuenta fue creada correctamente.');
+        } catch (error: any) {
+            console.log(error);
+            if (error.code === 'auth/email-already-in-use') {
+                Alert.alert('Error', 'El correo ya está en uso.');
+            } else if (error.code === 'auth/invalid-email') {
+                Alert.alert('Error', 'Correo inválido.');
+            } else if (error.code === 'auth/weak-password') {
+                Alert.alert('Error', 'La contraseña es muy débil (mínimo 6 caracteres).');
+            } else {
+                Alert.alert('Error', 'No se pudo registrar el usuario.');
+            }
+        }
     }
 
     return (
@@ -65,26 +71,80 @@ const RegisterScreen = () => {
 
                     <Controller
                         control={control}
-                        name="name"
+                        name="email"
                         rules={{
-                            required: 'El name es obligatorio',
+                            required: 'El email es obligatorio',
+                            pattern: {
+                                value: /\S+@\S+\.\S+/,
+                                message: 'Email inválido',
+                            },
                         }}
-                        render={({ field: {onChange, onBlur, value}}) => (
-                            <TextInput
-                                label="Name"
-                                mode={"outlined"}
-                                keyboardType="default"
-                                onBlur={onBlur}
-                                onChangeText={onChange}
-                                value={value}
-                                error={!!errors.name}
-                                style={{marginBottom: 16, width: '100%'}}
-                                right={
-                                    errors.name
-                                        ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>
-                                        : null
-                                }
-                            />
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <View style={{ width: '100%' }}>
+                                <TextInput
+                                    label="Email"
+                                    mode="outlined"
+                                    keyboardType="email-address"
+                                    onBlur={onBlur}
+                                    onChangeText={onChange}
+                                    value={value}
+                                    error={!!errors.email}
+                                    style={{ marginBottom: 8 }}
+                                    right={
+                                        errors.email ? (
+                                            <TextInput.Icon icon="close-circle" color="red" />
+                                        ) : value && !errors.email ? (
+                                            <TextInput.Icon icon="check-circle" color="green" />
+                                        ) : null
+                                    }
+
+                                />
+                                {errors.email?.message && (
+                                    <Text style={{ color: 'red', alignSelf: 'flex-start', marginBottom: 8 }}>
+                                        {errors.email.message.toString()}
+                                    </Text>
+                                )}
+
+                            </View>
+                        )}
+                    />
+
+
+                    <Controller
+                        control={control}
+                        name="password"
+                        rules={{
+                            required: 'La contraseña es obligatoria',
+                            minLength: {
+                                value: 6,
+                                message: 'Mínimo 6 caracteres',
+                            },
+                        }}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <View style={{ width: '100%' }}>
+                                <TextInput
+                                    label="Contraseña"
+                                    mode="outlined"
+                                    secureTextEntry
+                                    onBlur={onBlur}
+                                    onChangeText={onChange}
+                                    value={value}
+                                    error={!!errors.password}
+                                    style={{ marginBottom: 8 }}
+                                    right={
+                                        errors.password ? (
+                                            <TextInput.Icon icon="close-circle" color="red" />
+                                        ) : value && value.length >= 6 ? (
+                                            <TextInput.Icon icon="check-circle" color="green" />
+                                        ) : null
+                                    }
+                                />
+                                {errors.password?.message && (
+                                    <Text style={{ color: 'red', alignSelf: 'flex-start', marginBottom: 8 }}>
+                                        {errors.password.message.toString()}
+                                    </Text>
+                                )}
+                            </View>
                         )}
                     />
 

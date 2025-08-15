@@ -8,7 +8,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
 type AuthStackParamList = {
     AuthEntry: undefined;
     Login: undefined;
-    CreateAccount: undefined;
+    Register: undefined;
 }
 
 const AuthEntry: React.FC = () => {

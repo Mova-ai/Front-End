@@ -5,28 +5,31 @@ import {useForm, SubmitHandler, Controller} from 'react-hook-form';
 import LoginFormData from "../interface/LoginFormData";
 import { useNavigation } from '@react-navigation/native';
 import { getAuth, createUserWithEmailAndPassword } from '@react-native-firebase/auth';
+import {routesPublic} from "../../../routes/routes";
+import type {NativeStackNavigationProp} from "@react-navigation/native-stack";
+import {useAuth} from "../context/AuthContext";
+import AuthContextType from "../interface/AuthContextType";
 
 
 export default function LoginScreen() {
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
+
     const theme = useTheme();
     const { control, handleSubmit, formState: {errors}} = useForm<LoginFormData>();
     const navigation = useNavigation();
+    const auth : AuthContextType = useAuth();
+
+
 
     const onSubmit = (data: LoginFormData) => {
+        auth.login(data);
+    }
 
-        console.log("login: ", data);
-        const {email, password} = data;
+    const handleRecoveryPassword = () => {
+        console.log("Olvidar contraseña");
+    }
 
-        createUserWithEmailAndPassword(getAuth(),email,password)
-            .then(() => {
-                console.log("login adentro: ", data);
-            })
-        .catch((error) => {
-            console.log(error);
-        })
-        alert('Enviado');
+    const handleLoginWithGoogle = () => {
+        console.log("Login con google")
     }
 
     return (
@@ -112,12 +115,13 @@ export default function LoginScreen() {
                     {errors.password && <Text style={{ color: theme.colors.error }}>{errors.password.message}</Text>}
 
 
-                    <Text
+                    <Button
                         variant="bodyMedium"
                         style={{textAlign: 'right', width: '100%', marginBottom: 24}}
+                        onPress={handleRecoveryPassword}
                     >
                         Forgot password?
-                    </Text>
+                    </Button>
 
                     <Button
                         mode="contained"
@@ -141,7 +145,7 @@ export default function LoginScreen() {
                         <Button
                             mode="outlined"
                             style={{height:56, margin: 0, width: 130}}
-                            onPress={() => console.log('Google')}
+                            onPress={handleLoginWithGoogle}
                         >
                             <IconButton
                                 icon={"google"}
@@ -167,10 +171,10 @@ export default function LoginScreen() {
 
             {/*Don't have an account?*/}
             <View style={{justifyContent: 'center', alignItems:'center'}}>
-                <TouchableOpacity onPress={() => console.log('Login')}>
+                <TouchableOpacity onPress={() => navigation.navigate(`${routesPublic.register.name}`)}>
                     <Text variant="bodyLarge" style={{ color: theme.colors.onSurface }}>
                         Already have an account?
-                        <Text style={{ fontWeight: '700', color: theme.colors.primary} }> Log in</Text>
+                        <Text style={{ fontWeight: '700', color: theme.colors.primary} }> Sign in</Text>
                     </Text>
                 </TouchableOpacity>
             </View>

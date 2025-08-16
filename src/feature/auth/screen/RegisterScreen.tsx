@@ -5,30 +5,19 @@ import LoginFormData from "../interface/LoginFormData";
 import {useState} from "react";
 import { useNavigation } from "@react-navigation/native";
 import {createUserWithEmailAndPassword, getAuth} from "@react-native-firebase/auth";
+import {useAuth} from "../context/AuthContext";
+import {routesPublic} from "../../../routes/routes";
 
 
 
 const RegisterScreen = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
-
     const theme = useTheme();
     const { control, handleSubmit, formState: {errors}} = useForm<any>();
     const navigation = useNavigation();
+    const auth = useAuth();
 
     const onSubmit = (data: LoginFormData) => {
-        console.log("login: ", data);
-        const user = getAuth()
-            user.createUserWithEmailAndPassword("moid@gmail.com","dddyyyyy")
-    //    createUserWithEmailAndPassword(getAuth(),"eep@gmail.com", "tassword")
-            .then(r  => {
-
-                console.log("login adentro: ", r);
-            })
-            .catch(e => {
-                console.log(e);
-            })
+        const responde = auth.register(data);
     }
 
     return (
@@ -65,22 +54,22 @@ const RegisterScreen = () => {
 
                     <Controller
                         control={control}
-                        name="name"
+                        name="email"
                         rules={{
                             required: 'El name es obligatorio',
                         }}
                         render={({ field: {onChange, onBlur, value}}) => (
                             <TextInput
-                                label="Name"
+                                label="Email"
                                 mode={"outlined"}
                                 keyboardType="default"
                                 onBlur={onBlur}
                                 onChangeText={onChange}
                                 value={value}
-                                error={!!errors.name}
+                                error={!!errors.email}
                                 style={{marginBottom: 16, width: '100%'}}
                                 right={
-                                    errors.name
+                                    errors.email
                                         ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>
                                         : null
                                 }
@@ -88,113 +77,30 @@ const RegisterScreen = () => {
                         )}
                     />
 
-                    {/*<Controller*/}
-                    {/*    control={control}*/}
-                    {/*    name="email"*/}
-                    {/*    rules={{*/}
-                    {/*        required: 'El email es obligatorio',*/}
-                    {/*        pattern: {*/}
-                    {/*            value: /\S+@\S+\.\S+/,*/}
-                    {/*            message: 'Email inválido',*/}
-                    {/*        },*/}
-                    {/*    }}*/}
-                    {/*    render={({ field: {onChange, onBlur, value}}) => (*/}
-                    {/*        <TextInput*/}
-                    {/*            label="Email address"*/}
-                    {/*            mode={"outlined"}*/}
-                    {/*            keyboardType="email-address"*/}
-                    {/*            onBlur={onBlur}*/}
-                    {/*            onChangeText={onChange}*/}
-                    {/*            value={value}*/}
-                    {/*            error={!!errors.email}*/}
-                    {/*            style={{marginBottom: 16, width: '100%'}}*/}
-                    {/*            right={*/}
-                    {/*                errors.email*/}
-                    {/*                    ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>*/}
-                    {/*                    : null*/}
-                    {/*            }*/}
-                    {/*        />*/}
-                    {/*    )}*/}
-                    {/*/>*/}
-
-                    {/*<Controller*/}
-                    {/*    control={control}*/}
-                    {/*    name="email"*/}
-                    {/*    rules={{*/}
-                    {/*        required: 'El email es obligatorio',*/}
-                    {/*        pattern: {*/}
-                    {/*            value: /\S+@\S+\.\S+/,*/}
-                    {/*            message: 'Email inválido',*/}
-                    {/*        },*/}
-                    {/*    }}*/}
-                    {/*    render={({ field: {onChange, onBlur, value}}) => (*/}
-                    {/*        <TextInput*/}
-                    {/*            label="Email address"*/}
-                    {/*            mode={"outlined"}*/}
-                    {/*            keyboardType="email-address"*/}
-                    {/*            onBlur={onBlur}*/}
-                    {/*            onChangeText={onChange}*/}
-                    {/*            value={value}*/}
-                    {/*            error={!!errors.email}*/}
-                    {/*            style={{marginBottom: 16, width: '100%'}}*/}
-                    {/*            right={*/}
-                    {/*                errors.email*/}
-                    {/*                    ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>*/}
-                    {/*                    : null*/}
-                    {/*            }*/}
-                    {/*        />*/}
-                    {/*    )}*/}
-                    {/*/>*/}
-
-                    {/*<Controller*/}
-                    {/*    control={control}*/}
-                    {/*    name="email"*/}
-                    {/*    rules={{*/}
-                    {/*        required: 'El email es obligatorio',*/}
-                    {/*        pattern: {*/}
-                    {/*            value: /\S+@\S+\.\S+/,*/}
-                    {/*            message: 'Email inválido',*/}
-                    {/*        },*/}
-                    {/*    }}*/}
-                    {/*    render={({ field: {onChange, onBlur, value}}) => (*/}
-                    {/*        <TextInput*/}
-                    {/*            label="Email address"*/}
-                    {/*            mode={"outlined"}*/}
-                    {/*            keyboardType="email-address"*/}
-                    {/*            onBlur={onBlur}*/}
-                    {/*            onChangeText={onChange}*/}
-                    {/*            value={value}*/}
-                    {/*            error={!!errors.email}*/}
-                    {/*            style={{marginBottom: 16, width: '100%'}}*/}
-                    {/*            right={*/}
-                    {/*                errors.email*/}
-                    {/*                    ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>*/}
-                    {/*                    : null*/}
-                    {/*            }*/}
-                    {/*        />*/}
-                    {/*    )}*/}
-                    {/*/>*/}
-
-                    {/*<Controller*/}
-                    {/*    control={control}*/}
-                    {/*    name="password"*/}
-                    {/*    rules={{ required: 'La contraseña es obligatoria'}}*/}
-                    {/*    render={({ field: {onChange, onBlur, value}}) => (*/}
-                    {/*        <TextInput*/}
-                    {/*            label="Password"*/}
-                    {/*            mode={"outlined"}*/}
-                    {/*            secureTextEntry*/}
-                    {/*            onBlur={onBlur}*/}
-                    {/*            onChangeText={onChange}*/}
-                    {/*            value={value}*/}
-                    {/*            error={!!errors.password}*/}
-                    {/*            style={{marginBottom: 36, width: '100%'}}*/}
-                    {/*            right={<TextInput.Icon icon={"eye"}/>}*/}
-                    {/*        />*/}
-                    {/*    )}*/}
-                    {/*/>*/}
-                    {/*{errors.password && <Text style={{ color: theme.colors.error }}>{errors.password.message}</Text>}*/}
-
+                    <Controller
+                        control={control}
+                        name="password"
+                        rules={{
+                            required: 'El name es obligatorio',
+                        }}
+                        render={({ field: {onChange, onBlur, value}}) => (
+                            <TextInput
+                                label="Password"
+                                mode={"outlined"}
+                                keyboardType="default"
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                                error={!!errors.password}
+                                style={{marginBottom: 16, width: '100%'}}
+                                right={
+                                    errors.password
+                                        ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>
+                                        : null
+                                }
+                            />
+                        )}
+                    />
 
                     <Button
                         mode="contained"
@@ -244,7 +150,7 @@ const RegisterScreen = () => {
 
             {/*Don't have an account?*/}
             <View style={{justifyContent: 'center', alignItems:'center'}}>
-                <TouchableOpacity onPress={() => console.log('Login')}>
+                <TouchableOpacity onPress={() => navigation.navigate(`${routesPublic.login.name}`)}>
                     <Text variant="bodyMedium" style={{ color: theme.colors.onSurface }}>
                         Already have an account?
                         <Text style={{ fontWeight: '700', color: theme.colors.primary} }> Log in</Text>

@@ -1,7 +1,9 @@
+import {Text} from 'react-native-paper';
+
 const Home = () => {
     return (
         <>
-            <h1>Hola desde Home</h1>
+            <Text>Home page</Text>
         </>
     )
 }

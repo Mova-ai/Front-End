@@ -4,7 +4,7 @@ import {useState} from "react";
 import {useForm, SubmitHandler, Controller} from 'react-hook-form';
 import LoginFormData from "../interface/LoginFormData";
 import { useNavigation } from '@react-navigation/native';
-import { getAuth, createUserWithEmailAndPassword } from '@react-native-firebase/auth';
+import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from '@react-native-firebase/auth';
 
 
 export default function LoginScreen() {
@@ -19,15 +19,17 @@ export default function LoginScreen() {
         console.log("login: ", data);
         const {email, password} = data;
 
-        createUserWithEmailAndPassword(getAuth(),email,password)
-            .then(() => {
-                console.log("login adentro: ", data);
-            })
+    signInWithEmailAndPassword(getAuth(),email,password)
+        .then((user) => {
+            console.log("login adentro despues del login: ", user);
+        })
         .catch((error) => {
             console.log(error);
         })
-        alert('Enviado');
+
     }
+
+
 
     return (
         <View style={{flexGrow: 1, justifyContent: 'center', backgroundColor: theme.colors.background}}>

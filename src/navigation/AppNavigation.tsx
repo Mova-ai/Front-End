@@ -23,7 +23,7 @@ export default function AppNavigation() {
         <NavigationContainer>
                 {isAuthenticated ? (
                     <AppStack.Navigator screenOptions={{ headerShown: false }}>
-                        <AppStack.Screen name={"Home"} component={Home} />;
+                        <AppStack.Screen name={"Home"} component={Home} />
                     </AppStack.Navigator>
                 )
                     : (

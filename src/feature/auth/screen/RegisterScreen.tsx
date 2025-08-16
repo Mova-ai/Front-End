@@ -4,15 +4,14 @@ import {Controller, useForm} from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import {createUserWithEmailAndPassword, getAuth} from "@react-native-firebase/auth";
 
-
 type RegisterFormData = {
     email: string;
     password: string;
 };
 
 
-const RegisterScreen = () => {
 
+const RegisterScreen = () => {
 
     const theme = useTheme();
     const { control, handleSubmit, formState: {errors}} = useForm<any>();
@@ -35,6 +34,7 @@ const RegisterScreen = () => {
                 Alert.alert('Error', 'No se pudo registrar el usuario.');
             }
         }
+
     }
 
     return (
@@ -147,114 +147,6 @@ const RegisterScreen = () => {
                             </View>
                         )}
                     />
-
-                    {/*<Controller*/}
-                    {/*    control={control}*/}
-                    {/*    name="email"*/}
-                    {/*    rules={{*/}
-                    {/*        required: 'El email es obligatorio',*/}
-                    {/*        pattern: {*/}
-                    {/*            value: /\S+@\S+\.\S+/,*/}
-                    {/*            message: 'Email inválido',*/}
-                    {/*        },*/}
-                    {/*    }}*/}
-                    {/*    render={({ field: {onChange, onBlur, value}}) => (*/}
-                    {/*        <TextInput*/}
-                    {/*            label="Email address"*/}
-                    {/*            mode={"outlined"}*/}
-                    {/*            keyboardType="email-address"*/}
-                    {/*            onBlur={onBlur}*/}
-                    {/*            onChangeText={onChange}*/}
-                    {/*            value={value}*/}
-                    {/*            error={!!errors.email}*/}
-                    {/*            style={{marginBottom: 16, width: '100%'}}*/}
-                    {/*            right={*/}
-                    {/*                errors.email*/}
-                    {/*                    ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>*/}
-                    {/*                    : null*/}
-                    {/*            }*/}
-                    {/*        />*/}
-                    {/*    )}*/}
-                    {/*/>*/}
-
-                    {/*<Controller*/}
-                    {/*    control={control}*/}
-                    {/*    name="email"*/}
-                    {/*    rules={{*/}
-                    {/*        required: 'El email es obligatorio',*/}
-                    {/*        pattern: {*/}
-                    {/*            value: /\S+@\S+\.\S+/,*/}
-                    {/*            message: 'Email inválido',*/}
-                    {/*        },*/}
-                    {/*    }}*/}
-                    {/*    render={({ field: {onChange, onBlur, value}}) => (*/}
-                    {/*        <TextInput*/}
-                    {/*            label="Email address"*/}
-                    {/*            mode={"outlined"}*/}
-                    {/*            keyboardType="email-address"*/}
-                    {/*            onBlur={onBlur}*/}
-                    {/*            onChangeText={onChange}*/}
-                    {/*            value={value}*/}
-                    {/*            error={!!errors.email}*/}
-                    {/*            style={{marginBottom: 16, width: '100%'}}*/}
-                    {/*            right={*/}
-                    {/*                errors.email*/}
-                    {/*                    ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>*/}
-                    {/*                    : null*/}
-                    {/*            }*/}
-                    {/*        />*/}
-                    {/*    )}*/}
-                    {/*/>*/}
-
-                    {/*<Controller*/}
-                    {/*    control={control}*/}
-                    {/*    name="email"*/}
-                    {/*    rules={{*/}
-                    {/*        required: 'El email es obligatorio',*/}
-                    {/*        pattern: {*/}
-                    {/*            value: /\S+@\S+\.\S+/,*/}
-                    {/*            message: 'Email inválido',*/}
-                    {/*        },*/}
-                    {/*    }}*/}
-                    {/*    render={({ field: {onChange, onBlur, value}}) => (*/}
-                    {/*        <TextInput*/}
-                    {/*            label="Email address"*/}
-                    {/*            mode={"outlined"}*/}
-                    {/*            keyboardType="email-address"*/}
-                    {/*            onBlur={onBlur}*/}
-                    {/*            onChangeText={onChange}*/}
-                    {/*            value={value}*/}
-                    {/*            error={!!errors.email}*/}
-                    {/*            style={{marginBottom: 16, width: '100%'}}*/}
-                    {/*            right={*/}
-                    {/*                errors.email*/}
-                    {/*                    ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>*/}
-                    {/*                    : null*/}
-                    {/*            }*/}
-                    {/*        />*/}
-                    {/*    )}*/}
-                    {/*/>*/}
-
-                    {/*<Controller*/}
-                    {/*    control={control}*/}
-                    {/*    name="password"*/}
-                    {/*    rules={{ required: 'La contraseña es obligatoria'}}*/}
-                    {/*    render={({ field: {onChange, onBlur, value}}) => (*/}
-                    {/*        <TextInput*/}
-                    {/*            label="Password"*/}
-                    {/*            mode={"outlined"}*/}
-                    {/*            secureTextEntry*/}
-                    {/*            onBlur={onBlur}*/}
-                    {/*            onChangeText={onChange}*/}
-                    {/*            value={value}*/}
-                    {/*            error={!!errors.password}*/}
-                    {/*            style={{marginBottom: 36, width: '100%'}}*/}
-                    {/*            right={<TextInput.Icon icon={"eye"}/>}*/}
-                    {/*        />*/}
-                    {/*    )}*/}
-                    {/*/>*/}
-                    {/*{errors.password && <Text style={{ color: theme.colors.error }}>{errors.password.message}</Text>}*/}
-
 
                     <Button
                         mode="contained"

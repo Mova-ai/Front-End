@@ -16,15 +16,15 @@ export default function App() {
         <AuthProvider>
             <ThemeProvider>
                 <NavigationContainer>
-                <View style={{flex: 1, backgroundColor: theme.colors.background}}>
-                    <SafeAreaProvider style={[styles.container]}>
-                        <SafeAreaView>
-                            <AppNavigation/>
-                            <ThemeToggleButton/>
-                        </SafeAreaView>
-                    </SafeAreaProvider>
-                </View>
-                    </NavigationContainer>
+                    <View style={{flex: 1, backgroundColor: theme.colors.background}}>
+                        <SafeAreaProvider style={[styles.container]}>
+                            <SafeAreaView>
+                                <AppNavigation/>
+                                <ThemeToggleButton/>
+                            </SafeAreaView>
+                        </SafeAreaProvider>
+                    </View>
+                </NavigationContainer>
 
             </ThemeProvider>
         </AuthProvider>

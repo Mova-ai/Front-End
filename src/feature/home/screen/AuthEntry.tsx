@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import type {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {Button, Text, useTheme} from 'react-native-paper';
 import {SafeAreaView} from "react-native-safe-area-context";
+import {routesPublic} from "../../../routes/routes";
 
 type AuthStackParamList = {
     AuthEntry: undefined;
@@ -49,7 +50,7 @@ const AuthEntry: React.FC = () => {
                     <View>
                         <Button
                             mode="contained"
-                            onPress={() => navigation.navigate('Login')}
+                            onPress={() => navigation.navigate(`${routesPublic.login.name}`)}
                             style={styles.button}
                             labelStyle={theme.fonts.headlineSmall}
                             buttonColor={theme.colors.primary}
@@ -61,7 +62,7 @@ const AuthEntry: React.FC = () => {
                         <Button
                             mode="outlined"
                             labelStyle={theme.fonts.headlineSmall}
-                            onPress={() => navigation.navigate('Register')}
+                            onPress={() => navigation.navigate(`${routesPublic.register.name}`)}
                             style={[styles.button, {borderColor: theme.colors.primary}]}
                             // textColor={theme.colors.onPrimary}
                         >

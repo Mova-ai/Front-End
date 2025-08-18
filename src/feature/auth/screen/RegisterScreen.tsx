@@ -3,6 +3,8 @@ import {Button, IconButton, Text, TextInput, useTheme} from "react-native-paper"
 import {Controller, useForm} from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import {createUserWithEmailAndPassword, getAuth} from "@react-native-firebase/auth";
+import {useAuth} from "../context/AuthContext";
+import {routesPublic} from "../../../routes/routes";
 
 type RegisterFormData = {
     email: string;
@@ -16,24 +18,11 @@ const RegisterScreen = () => {
     const theme = useTheme();
     const { control, handleSubmit, formState: {errors}} = useForm<any>();
     const navigation = useNavigation();
+    const auth = useAuth();
 
-    const onSubmit = async (data: RegisterFormData) => {
-        try {
-            const userCredential = await createUserWithEmailAndPassword(getAuth(), data.email, data.password);
-            console.log('Usuario registrado:', userCredential.user);
-            Alert.alert('Registro exitoso', 'Tu cuenta fue creada correctamente.');
-        } catch (error: any) {
-            console.log(error);
-            if (error.code === 'auth/email-already-in-use') {
-                Alert.alert('Error', 'El correo ya está en uso.');
-            } else if (error.code === 'auth/invalid-email') {
-                Alert.alert('Error', 'Correo inválido.');
-            } else if (error.code === 'auth/weak-password') {
-                Alert.alert('Error', 'La contraseña es muy débil (mínimo 6 caracteres).');
-            } else {
-                Alert.alert('Error', 'No se pudo registrar el usuario.');
-            }
-        }
+
+    const onSubmit = (data: LoginFormData) => {
+        const responde = auth.register(data);
 
     }
 
@@ -79,33 +68,23 @@ const RegisterScreen = () => {
                                 message: 'Email inválido',
                             },
                         }}
-                        render={({ field: { onChange, onBlur, value } }) => (
-                            <View style={{ width: '100%' }}>
-                                <TextInput
-                                    label="Email"
-                                    mode="outlined"
-                                    keyboardType="email-address"
-                                    onBlur={onBlur}
-                                    onChangeText={onChange}
-                                    value={value}
-                                    error={!!errors.email}
-                                    style={{ marginBottom: 8 }}
-                                    right={
-                                        errors.email ? (
-                                            <TextInput.Icon icon="close-circle" color="red" />
-                                        ) : value && !errors.email ? (
-                                            <TextInput.Icon icon="check-circle" color="green" />
-                                        ) : null
-                                    }
 
-                                />
-                                {errors.email?.message && (
-                                    <Text style={{ color: 'red', alignSelf: 'flex-start', marginBottom: 8 }}>
-                                        {errors.email.message.toString()}
-                                    </Text>
-                                )}
-
-                            </View>
+                        render={({ field: {onChange, onBlur, value}}) => (
+                            <TextInput
+                                label="Email"
+                                mode={"outlined"}
+                                keyboardType="default"
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                                error={!!errors.email}
+                                style={{marginBottom: 16, width: '100%'}}
+                                right={
+                                    errors.email
+                                        ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>
+                                        : null
+                                }
+                            />
                         )}
                     />
 
@@ -114,37 +93,26 @@ const RegisterScreen = () => {
                         control={control}
                         name="password"
                         rules={{
-                            required: 'La contraseña es obligatoria',
-                            minLength: {
-                                value: 6,
-                                message: 'Mínimo 6 caracteres',
-                            },
+
+                            required: 'El name es obligatorio',
                         }}
-                        render={({ field: { onChange, onBlur, value } }) => (
-                            <View style={{ width: '100%' }}>
-                                <TextInput
-                                    label="Contraseña"
-                                    mode="outlined"
-                                    secureTextEntry
-                                    onBlur={onBlur}
-                                    onChangeText={onChange}
-                                    value={value}
-                                    error={!!errors.password}
-                                    style={{ marginBottom: 8 }}
-                                    right={
-                                        errors.password ? (
-                                            <TextInput.Icon icon="close-circle" color="red" />
-                                        ) : value && value.length >= 6 ? (
-                                            <TextInput.Icon icon="check-circle" color="green" />
-                                        ) : null
-                                    }
-                                />
-                                {errors.password?.message && (
-                                    <Text style={{ color: 'red', alignSelf: 'flex-start', marginBottom: 8 }}>
-                                        {errors.password.message.toString()}
-                                    </Text>
-                                )}
-                            </View>
+                        render={({ field: {onChange, onBlur, value}}) => (
+                            <TextInput
+                                label="Password"
+                                mode={"outlined"}
+                                keyboardType="default"
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                                error={!!errors.password}
+                                style={{marginBottom: 16, width: '100%'}}
+                                right={
+                                    errors.password
+                                        ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>
+                                        : null
+                                }
+                            />
+
                         )}
                     />
 
@@ -196,7 +164,7 @@ const RegisterScreen = () => {
 
             {/*Don't have an account?*/}
             <View style={{justifyContent: 'center', alignItems:'center'}}>
-                <TouchableOpacity onPress={() => console.log('Login')}>
+                <TouchableOpacity onPress={() => navigation.navigate(`${routesPublic.login.name}`)}>
                     <Text variant="bodyMedium" style={{ color: theme.colors.onSurface }}>
                         Already have an account?
                         <Text style={{ fontWeight: '700', color: theme.colors.primary} }> Log in</Text>

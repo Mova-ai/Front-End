@@ -1,56 +1,69 @@
 import React, {createContext, useState, useContext, ReactNode, useEffect} from "react";
 // @ts-ignore
 import AuthContextType from "../interface/AuthContextType";
-import {FirebaseAuthTypes} from "@react-native-firebase/auth";
-import auth from '@react-native-firebase/auth';
 
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail, sendEmailVerification, updateProfile
+} from '@react-native-firebase/auth';
+import {handleFirebaseAuthError} from "./FirebaseError";
+import LoginFormData from "../interface/LoginFormData";
+import {UsuarioInterface} from "../UserState";
+import {FirebaseError} from "firebase/app";
 
+export interface Formulario {
+    email: string;
+    password: string;
+}
 
-
-
-interface AuthContextType {
-
-    user: FirebaseAuthTypes.User | null;
-    isAuthenticated: boolean;
-    register: (email: string, password: string) => Promise<void>;
+export interface ErrorAuth {
+    isAuth: boolean;
+    message: string;
 
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-    const isAuthenticated = !!user;
 
-    useEffect(() => {
-        const unsubscribe = auth().onAuthStateChanged((firebaseUser) => {
-            setUser(firebaseUser);
-        });
+export const AuthProvider = ({ children } : { children: ReactNode } ) => {
+    const auth = getAuth();
+    const [ user, setUser ] = useState<UsuarioInterface | null>(null);
 
-        return () => unsubscribe();
-    }, []);
+    /*
+    const register = async (data : Formulario) => {
 
-    const register = async (email: string, password: string) => {
-        try {
-            await auth().createUserWithEmailAndPassword(email, password);
-        } catch (error: any) {
-            if (error.code === 'auth/email-already-in-use') {
-                throw new Error('El correo ya está en uso.');
-            }
-            if (error.code === 'auth/invalid-email') {
-                throw new Error('Correo inválido.');
-            }
-            if (error.code === 'auth/weak-password') {
-                throw new Error('La contraseña es muy débil.');
-            }
-            throw new Error('Error al registrar.');
-        }
+    }
+
+    const Login = ( ) => {
+
     };
 
+    const LoginWithGoogle = () => {
 
+    }
+
+    const RecoveryPassword = () => {
+
+    }
+
+    const VerifiqueEmail = () => {
+
+    }
+
+    const UpdateProfile = () => {
+
+    }
+
+    const Logout = () => {
+
+    };
+    */
 
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, register }}>
+        <AuthContext.Provider value={{ user }}>
+
             {children}
         </AuthContext.Provider>
     );

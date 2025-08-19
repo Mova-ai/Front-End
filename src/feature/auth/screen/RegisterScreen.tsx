@@ -22,23 +22,22 @@ const RegisterScreen = () => {
     const auth = useAuth();
 
 
-    const onSubmit = async (data: RegisterFormData) => {
+        const onSubmit = async (data: RegisterFormData) => {
+            console.log("Registro datos:", data);
+            try {
 
-        try {
-            const response = await auth.register(data);
+                const response = await auth.register(data);
 
-            if (response.isAuth) {
-                Alert.alert("Registro exitoso", response.message);
-                console.log("Respuesta registro:", response);
-                navigation.navigate(routesPublic.login.name);
-            } else {
-                Alert.alert("Error en registro", response.message);
+                if (response.isAuth) {
+                    Alert.alert("Registro exitoso", response.message);
+                    navigation.navigate(routesPublic.login.name);
+                } else {
+                    Alert.alert("Error en registro", response.message);
+                }
+            } catch (error) {
+                Alert.alert("Error inesperado", "Por favor intenta más tarde.");
             }
-        } catch (error) {
-            Alert.alert("Error inesperado", "Por favor intenta más tarde.");
-            console.error("Error en registro:", error);
-        }
-    };
+        };
 
 
     return (

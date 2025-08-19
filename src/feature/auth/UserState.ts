@@ -13,3 +13,10 @@ export interface UserState {
         planes?: string[];
     };
 }
+
+export interface UsuarioInterface {
+    uid: string;
+    email: string;
+    displayName?: string;
+    photoURL?: string;
+}

@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import {createUserWithEmailAndPassword, getAuth} from "@react-native-firebase/auth";
 import {useAuth} from "../context/AuthContext";
 import {routesPublic} from "../../../routes/routes";
+import LoginFormData from "../interface/LoginFormData";
 
 type RegisterFormData = {
     email: string;
@@ -16,15 +17,29 @@ type RegisterFormData = {
 const RegisterScreen = () => {
 
     const theme = useTheme();
-    const { control, handleSubmit, formState: {errors}} = useForm<any>();
+    const { control, handleSubmit, formState: {errors}} = useForm<RegisterFormData>();
     const navigation = useNavigation();
     const auth = useAuth();
 
 
-    const onSubmit = (data: LoginFormData) => {
-        const responde = auth.register(data);
+    const onSubmit = async (data: RegisterFormData) => {
 
-    }
+        try {
+            const response = await auth.register(data);
+
+            if (response.isAuth) {
+                Alert.alert("Registro exitoso", response.message);
+                console.log("Respuesta registro:", response);
+                navigation.navigate(routesPublic.login.name);
+            } else {
+                Alert.alert("Error en registro", response.message);
+            }
+        } catch (error) {
+            Alert.alert("Error inesperado", "Por favor intenta más tarde.");
+            console.error("Error en registro:", error);
+        }
+    };
+
 
     return (
         <ScrollView contentContainerStyle={{flex: 1, justifyContent: 'center', backgroundColor: theme.colors.background}}>

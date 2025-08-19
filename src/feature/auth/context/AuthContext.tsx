@@ -27,47 +27,144 @@ export interface ErrorAuth {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 
-export const AuthProvider = ({ children } : { children: ReactNode } ) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const auth = getAuth();
-    const [ user, setUser ] = useState<UsuarioInterface | null>(null);
+    const [user, setUser] = useState<UsuarioInterface | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    /*
-    const register = async (data : Formulario) => {
 
-    }
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
+            if (firebaseUser) {
+                setUser({
+                    uid: firebaseUser.uid,
+                    email: firebaseUser.email || '',
+                    displayName: firebaseUser.displayName || '',
+                    photoURL: firebaseUser.photoURL || '',
+                });
+            } else {
+                setUser(null);
+            }
+            setLoading(false);
+        });
 
-    const Login = ( ) => {
+        return unsubscribe;
+    }, []);
 
+
+    const register = async (data: Formulario): Promise<ErrorAuth> => {
+        try {
+            const auth = getAuth();
+            const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+            await sendEmailVerification(userCredential.user);
+
+            return {
+                isAuth: true,
+                message: 'Usuario registrado correctamente. Verifica tu correo electrónico.',
+            };
+        } catch (error) {
+           return handleFirebaseAuthError(error as FirebaseError)
+        }
     };
 
-    const LoginWithGoogle = () => {
 
-    }
+    const login = async (data: Formulario): Promise<ErrorAuth> => {
+        try {
+            const auth = getAuth();
+            await signInWithEmailAndPassword(auth, data.email, data.password);
 
-    const RecoveryPassword = () => {
-
-    }
-
-    const VerifiqueEmail = () => {
-
-    }
-
-    const UpdateProfile = () => {
-
-    }
-
-    const Logout = () => {
-
+            return {
+                isAuth: true,
+                message: 'Inicio de sesión exitoso.',
+            };
+        } catch (error) {
+            return handleFirebaseAuthError(error as FirebaseError);
+        }
     };
-    */
+
+
+    const recoveryPassword = async (email: string): Promise<ErrorAuth> => {
+        try {
+            const auth = getAuth();
+            await sendPasswordResetEmail(auth, email);
+
+            return {
+                isAuth: true,
+                message: 'Correo de recuperación enviado.',
+            };
+        } catch (error) {
+            return handleFirebaseAuthError(error as FirebaseError);
+        }
+    };
+
+
+    const verifiqueEmail = async (): Promise<ErrorAuth> => {
+        try {
+            const auth = getAuth();
+            if (auth.currentUser) {
+                await sendEmailVerification(auth.currentUser);
+
+                return {
+                    isAuth: true,
+                    message: 'Correo de verificación enviado.',
+                };
+            }
+
+            return {
+                isAuth: false,
+                message: 'No hay usuario autenticado.',
+            };
+        } catch (error) {
+            return handleFirebaseAuthError(error as FirebaseError);
+        }
+    };
+
+    const updateUserProfile = async (displayName: string, photoURL?: string): Promise<ErrorAuth> => {
+        try {
+            const auth = getAuth();
+            if (auth.currentUser) {
+                await updateProfile(auth.currentUser, { displayName, photoURL });
+
+                return {
+                    isAuth: true,
+                    message: 'Perfil actualizado correctamente.',
+                };
+            }
+
+            return {
+                isAuth: false,
+                message: 'No hay usuario autenticado.',
+            };
+        } catch (error) {
+            return handleFirebaseAuthError(error as FirebaseError);
+        }
+    };
+
+
+    const logout = async (): Promise<void> => {
+        const auth = getAuth();
+        await auth.signOut();
+    };
+
 
     return (
-        <AuthContext.Provider value={{ user }}>
-
+        <AuthContext.Provider
+            value={{
+                user,
+                register,
+                login,
+                logout,
+                recoveryPassword,
+                verifiqueEmail,
+                updateUserProfile,
+                loading,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );
 };
+
 
 export const useAuth = () => {
     const context = useContext(AuthContext);

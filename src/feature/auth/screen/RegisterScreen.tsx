@@ -1,25 +1,48 @@
-import {Image, ScrollView, TouchableOpacity, View} from "react-native";
-import {Button, IconButton, Text, TextInput, useTheme} from "react-native-paper";
+import {Alert, Image, ScrollView, TouchableOpacity, View} from "react-native";
+import {Button, HelperText, IconButton, Text, TextInput, useTheme} from "react-native-paper";
 import {Controller, useForm} from "react-hook-form";
-import LoginFormData from "../interface/LoginFormData";
-import {useState} from "react";
 import { useNavigation } from "@react-navigation/native";
 import {createUserWithEmailAndPassword, getAuth} from "@react-native-firebase/auth";
 import {useAuth} from "../context/AuthContext";
 import {routesPublic} from "../../../routes/routes";
+import LoginFormData from "../interface/LoginFormData";
+import {useState} from "react";
+
+type RegisterFormData = {
+    email: string;
+    password: string;
+};
+
 
 
 
 const RegisterScreen = () => {
+
     const theme = useTheme();
-    const { control, handleSubmit, formState: {errors}} = useForm<any>();
+    const { control, handleSubmit, formState: {errors}} = useForm<RegisterFormData>();
     const navigation = useNavigation();
     const auth = useAuth();
 
-    const onSubmit = (data: LoginFormData) => {
-        const responde = auth.register(data);
-    }
 
+        const onSubmit = async (data: RegisterFormData) => {
+            console.log("Registro datos:", data);
+            try {
+
+                const response = await auth.register(data);
+
+                if (response.isAuth) {
+                    Alert.alert("Registro exitoso", response.message);
+                    navigation.navigate(routesPublic.login.name);
+                } else {
+                    Alert.alert("Error en registro", response.message);
+                }
+            } catch (error) {
+                Alert.alert("Error inesperado", "Por favor intenta más tarde.");
+            }
+        };
+
+
+    const [showPassword, setShowPassword] = useState(false);
     return (
         <ScrollView contentContainerStyle={{flex: 1, justifyContent: 'center', backgroundColor: theme.colors.background}}>
 
@@ -56,37 +79,57 @@ const RegisterScreen = () => {
                         control={control}
                         name="email"
                         rules={{
-                            required: 'El name es obligatorio',
+                            required: 'El email es obligatorio',
+                            pattern: {
+                                value: /\S+@\S+\.\S+/,
+                                message: 'Email inválido',
+                            },
                         }}
+
                         render={({ field: {onChange, onBlur, value}}) => (
                             <TextInput
                                 label="Email"
                                 mode={"outlined"}
-                                keyboardType="default"
+                                keyboardType="email-address"
                                 onBlur={onBlur}
                                 onChangeText={onChange}
                                 value={value}
                                 error={!!errors.email}
                                 style={{marginBottom: 16, width: '100%'}}
                                 right={
-                                    errors.email
-                                        ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>
-                                        : null
+                                    value && !errors.email ? (
+                                        <TextInput.Icon icon="check" color={theme.colors.success} />
+                                    ) : null
                                 }
                             />
                         )}
                     />
+                    {errors.email && (
+                        <HelperText type="error" visible={true}>
+                            {errors.email.message}
+                        </HelperText>
+                    )}
 
                     <Controller
                         control={control}
                         name="password"
                         rules={{
+
                             required: 'El name es obligatorio',
+                            minLength: {
+                                value: 6,
+                                message: 'La contraseña debe tener al menos 6 caracteres',
+                            },
+                            maxLength: {
+                                value: 20,
+                                message: 'La contraseña no puede superar los 20 caracteres',
+                            },
                         }}
                         render={({ field: {onChange, onBlur, value}}) => (
                             <TextInput
                                 label="Password"
                                 mode={"outlined"}
+                                secureTextEntry={!showPassword}
                                 keyboardType="default"
                                 onBlur={onBlur}
                                 onChangeText={onChange}
@@ -94,13 +137,20 @@ const RegisterScreen = () => {
                                 error={!!errors.password}
                                 style={{marginBottom: 16, width: '100%'}}
                                 right={
-                                    errors.password
-                                        ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>
-                                        : null
+                                    <TextInput.Icon
+                                        icon={showPassword ? "eye-off" : "eye"}
+                                        onPress={() => setShowPassword(!showPassword)}
+                                    />
                                 }
                             />
+
                         )}
                     />
+                    {errors.password && (
+                        <HelperText type="error" visible={true}>
+                            {errors.password.message}
+                        </HelperText>
+                    )}
 
                     <Button
                         mode="contained"

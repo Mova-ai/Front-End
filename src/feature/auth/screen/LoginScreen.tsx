@@ -1,36 +1,66 @@
 import {View, ScrollView, Image, TouchableOpacity} from 'react-native';
-import {Text, Button, TextInput, useTheme, IconButton} from 'react-native-paper';
+import {Text, Button, TextInput, useTheme, IconButton, HelperText} from 'react-native-paper';
 import {useState} from "react";
 import {useForm, SubmitHandler, Controller} from 'react-hook-form';
 import LoginFormData from "../interface/LoginFormData";
 import { useNavigation } from '@react-navigation/native';
+
 import { getAuth, createUserWithEmailAndPassword } from '@react-native-firebase/auth';
 import {routesPublic} from "../../../routes/routes";
+import {routesPrivate} from "../../../routes/routes";
 import type {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {useAuth} from "../context/AuthContext";
 import AuthContextType from "../interface/AuthContextType";
 
 
+
 export default function LoginScreen() {
 
     const theme = useTheme();
-    const { control, handleSubmit, formState: {errors}} = useForm<LoginFormData>();
+    const { control, handleSubmit,getValues, formState: {errors}} = useForm<LoginFormData>();
     const navigation = useNavigation();
     const auth : AuthContextType = useAuth();
 
 
 
-    const onSubmit = (data: LoginFormData) => {
-        auth.login(data);
-    }
+    const onSubmit = async (data: LoginFormData) => {
+        const result = await auth.login(data);
 
-    const handleRecoveryPassword = () => {
-        console.log("Olvidar contraseña");
-    }
+        if (result.isAuth) {
+            console.log(result.message);
+            navigation.navigate(routesPrivate.home.name);
+        } else {
+            console.log("Error de login", result.message);
+            alert(result.message);
+        }
+    };
+
+    const handleRecoveryPassword = async () => {
+        const email = getValues("email");
+
+        if (!email) {
+            alert("Por favor ingresa tu email primero.");
+            return;
+        }
+
+        const result = await auth.recoveryPassword(email);
+
+        if (result.isAuth) {
+            alert(result.message);
+        } else {
+            alert(result.message);
+        }
+    };
+
+
 
     const handleLoginWithGoogle = () => {
         console.log("Login con google")
+
     }
+
+
+    const [showPassword, setShowPassword] = useState(false);
 
     return (
         <View style={{flexGrow: 1, justifyContent: 'center', backgroundColor: theme.colors.background}}>
@@ -86,34 +116,56 @@ export default function LoginScreen() {
                                 error={!!errors.email}
                                 style={{marginBottom: 16, width: '100%'}}
                                 right={
-                                    errors.email
-                                        ? <TextInput.Icon icon={"check"} color={theme.colors.success}/>
-                                        : null
+                                    value && !errors.email ? (
+                                        <TextInput.Icon icon="check" color={theme.colors.success} />
+                                    ) : null
                                 }
                             />
                         )}
                        />
+                    {errors.email && (
+                        <HelperText type="error" visible={true}>
+                            {errors.email.message}
+                        </HelperText>
+                    )}
 
                     <Controller
                         control={control}
                         name="password"
-                        rules={{ required: 'La contraseña es obligatoria'}}
+                        rules={{ required: 'La contraseña es obligatoria',
+                            minLength: {
+                                value: 6,
+                                message: 'La contraseña debe tener al menos 6 caracteres',
+                            },
+                            maxLength: {
+                                value: 20,
+                                message: 'La contraseña no puede superar los 20 caracteres',
+                            },
+                        }}
                         render={({ field: {onChange, onBlur, value}}) => (
                             <TextInput
                                 label="Password"
                                 mode={"outlined"}
-                                secureTextEntry
+                                secureTextEntry={!showPassword}
                                 onBlur={onBlur}
                                 onChangeText={onChange}
                                 value={value}
                                 error={!!errors.password}
                                 style={{marginBottom: 8, width: '100%'}}
-                                right={<TextInput.Icon icon={"eye"}/>}
+                                right={
+                                    <TextInput.Icon
+                                        icon={showPassword ? "eye-off" : "eye"}
+                                        onPress={() => setShowPassword(!showPassword)}
+                                    />
+                            }
                             />
                         )}
                     />
-                    {errors.password && <Text style={{ color: theme.colors.error }}>{errors.password.message}</Text>}
-
+                    {errors.password && (
+                        <HelperText type="error" visible={true}>
+                            {errors.password.message}
+                        </HelperText>
+                    )}
 
                     <Button
                         variant="bodyMedium"
@@ -135,7 +187,7 @@ export default function LoginScreen() {
                     </Button>
                 </View>
 
-                {/*Or login with*/}
+
                 <View style={{alignItems:'center', gap: 16}}>
                     <Text variant={"bodyLarge"}>
                         Or login with
@@ -171,7 +223,7 @@ export default function LoginScreen() {
 
             {/*Don't have an account?*/}
             <View style={{justifyContent: 'center', alignItems:'center'}}>
-                <TouchableOpacity onPress={() => navigation.navigate(`${routesPublic.register.name}`)}>
+                <TouchableOpacity onPress={() => navigation.navigate(`/${routesPublic.register.name}`)}>
                     <Text variant="bodyLarge" style={{ color: theme.colors.onSurface }}>
                         Already have an account?
                         <Text style={{ fontWeight: '700', color: theme.colors.primary} }> Sign in</Text>

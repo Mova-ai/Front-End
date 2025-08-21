@@ -1,12 +1,14 @@
-import {Formulario} from "../context/AuthContext";
+
+import { UsuarioInterface } from "../UserState";
+import { Formulario, ErrorAuth } from "../context/AuthContext";
 
 export default interface AuthContextType {
-    user: boolean;
-    login : (data: Formulario) => Object;
-    loginWithGoogle : () => Object;
-    register : (data : Formulario) => Object;
-    verifiqueEmail: (email: string) => Object;
-    recoveryPassword: (email: string) => Object;
-    updatePassword : (data: Object) => Object;
-    logout: () => void;
+    user: UsuarioInterface | null;
+    loading: boolean;
+    register: (data: Formulario) => Promise<ErrorAuth>;
+    login: (data: Formulario) => Promise<ErrorAuth>;
+    logout: () => Promise<void>;
+    recoveryPassword: (email: string) => Promise<ErrorAuth>;
+    verifiqueEmail: () => Promise<ErrorAuth>;
+    updateUserProfile: (displayName: string, photoURL?: string) => Promise<ErrorAuth>;
 }

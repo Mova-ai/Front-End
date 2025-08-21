@@ -25,6 +25,7 @@ export default function AppNavigation() {
     const { user } = useAuth();
 
     return (
+
         <>
             {!user ? <RoutesPublic /> : <RoutesPrivate />}
         </>

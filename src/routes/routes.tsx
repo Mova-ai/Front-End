@@ -75,7 +75,7 @@ export const routesPublic: Rpublic = {
  * @property {object} home - Pantalla principal del usuario autenticado
  * @note Se pueden agregar más rutas privadas aquí, por ejemplo: users, locals, book, reviews, gamification, search
  */
-const routesPrivate: Rprivate = {
+export const routesPrivate: Rprivate = {
     home: {name: 'Home', component: Home},
     // users: Route;
     // locals: Route;

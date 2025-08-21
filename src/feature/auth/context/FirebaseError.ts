@@ -1,58 +1,92 @@
 import { FirebaseError } from "firebase/app";
+import { ErrorAuth } from "./AuthContext";
 
-export const handleFirebaseAuthError = (error : FirebaseError) => {
+export const handleFirebaseAuthError = (error: FirebaseError): ErrorAuth => {
+    let message = "";
+
     switch (error.code) {
         case "auth/invalid-email":
-            return "Correo electrónico no válido.";
+            message = "Correo electrónico no válido.";
+            break;
         case "auth/user-disabled":
-            return "Usuario deshabilitado.";
+            message = "Usuario deshabilitado.";
+            break;
         case "auth/user-not-found":
-            return "Usuario no encontrado.";
+            message = "Usuario no encontrado.";
+            break;
         case "auth/wrong-password":
-            return "Contraseña incorrecta.";
+            message = "Contraseña incorrecta.";
+            break;
         case "auth/email-already-in-use":
-            return "El correo ya está en uso.";
+            message = "El correo ya está en uso.";
+            break;
         case "auth/operation-not-allowed":
-            return "Operación no permitida.";
+            message = "Operación no permitida.";
+            break;
         case "auth/weak-password":
-            return "Contraseña demasiado débil.";
+            message = "Contraseña demasiado débil.";
+            break;
         case "auth/too-many-requests":
-            return "Demasiados intentos. Intente más tarde.";
+            message = "Demasiados intentos. Intente más tarde.";
+            break;
         case "auth/invalid-credential":
-            return "Credencial inválida.";
+            message = "Credencial inválida.";
+            break;
         case "auth/credential-already-in-use":
-            return "Esta credencial ya está asociada a otra cuenta.";
+            message = "Esta credencial ya está asociada a otra cuenta.";
+            break;
         case "auth/account-exists-with-different-credential":
-            return "Ya existe una cuenta con otra credencial.";
+            message = "Ya existe una cuenta con otra credencial.";
+            break;
         case "auth/requires-recent-login":
-            return "Debe iniciar sesión de nuevo para esta operación.";
+            message = "Debe iniciar sesión de nuevo para esta operación.";
+            break;
         case "auth/provider-already-linked":
-            return "El proveedor ya está vinculado a la cuenta.";
+            message = "El proveedor ya está vinculado a la cuenta.";
+            break;
         case "auth/no-such-provider":
-            return "Proveedor no vinculado a la cuenta.";
+            message = "Proveedor no vinculado a la cuenta.";
+            break;
         case "auth/network-request-failed":
-            return "Error de red. Revise su conexión.";
+            message = "Error de red. Revise su conexión.";
+            break;
         case "auth/cancelled-popup-request":
-            return "Solicitud de popup cancelada.";
+            message = "Solicitud de popup cancelada.";
+            break;
         case "auth/popup-closed-by-user":
-            return "El popup se cerró antes de completar la operación.";
+            message = "El popup se cerró antes de completar la operación.";
+            break;
         case "auth/popup-blocked":
-            return "El popup fue bloqueado por el navegador.";
+            message = "El popup fue bloqueado por el navegador.";
+            break;
         case "auth/unauthorized-domain":
-            return "Dominio no autorizado para esta operación.";
+            message = "Dominio no autorizado para esta operación.";
+            break;
         case "auth/invalid-verification-code":
-            return "Código de verificación inválido.";
+            message = "Código de verificación inválido.";
+            break;
         case "auth/missing-verification-code":
-            return "Falta el código de verificación.";
+            message = "Falta el código de verificación.";
+            break;
         case "auth/invalid-phone-number":
-            return "Número de teléfono inválido.";
+            message = "Número de teléfono inválido.";
+            break;
         case "auth/missing-phone-number":
-            return "Falta el número de teléfono.";
+            message = "Falta el número de teléfono.";
+            break;
         case "auth/quota-exceeded":
-            return "Se excedió la cuota de solicitudes. Intente más tarde.";
+            message = "Se excedió la cuota de solicitudes. Intente más tarde.";
+            break;
         case "auth/operation-not-supported-in-this-environment":
-            return "Operación no soportada en este entorno.";
+            message = "Operación no soportada en este entorno.";
+            break;
         default:
-            return "Ocurrió un error desconocido.";
+            message = "Ocurrió un error desconocido.";
     }
+
+    return {
+        isAuth: false,
+        message,
+    };
 };
+

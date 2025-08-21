@@ -9,7 +9,7 @@ import {routesPublic} from "../../../routes/routes";
 type AuthStackParamList = {
     AuthEntry: undefined;
     Login: undefined;
-    CreateAccount: undefined;
+    Register: undefined;
 }
 
 const AuthEntry: React.FC = () => {

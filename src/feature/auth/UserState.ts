@@ -19,4 +19,5 @@ export interface UsuarioInterface {
     email: string;
     displayName?: string;
     photoURL?: string;
+    isAuth: boolean;
 }

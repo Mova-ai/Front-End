@@ -41,6 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     email: firebaseUser.email || '',
                     displayName: firebaseUser.displayName || '',
                     photoURL: firebaseUser.photoURL || '',
+                    isAuth: true,
                 });
             } else {
                 setUser(null);
@@ -54,7 +55,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const register = async (data: Formulario): Promise<ErrorAuth> => {
         try {
-            const auth = getAuth();
             const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
             await sendEmailVerification(userCredential.user);
 
@@ -63,14 +63,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 message: 'Usuario registrado correctamente. Verifica tu correo electrónico.',
             };
         } catch (error) {
-           return handleFirebaseAuthError(error as FirebaseError)
+           return {isAuth: false, message: handleFirebaseAuthError(error as FirebaseError).message};
         }
     };
 
 
     const login = async (data: Formulario): Promise<ErrorAuth> => {
         try {
-            const auth = getAuth();
             await signInWithEmailAndPassword(auth, data.email, data.password);
 
             return {
@@ -85,7 +84,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const recoveryPassword = async (email: string): Promise<ErrorAuth> => {
         try {
-            const auth = getAuth();
             await sendPasswordResetEmail(auth, email);
 
             return {
@@ -115,7 +113,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 message: 'No hay usuario autenticado.',
             };
         } catch (error) {
-            return handleFirebaseAuthError(error as FirebaseError);
+            return {isAuth: false, message: handleFirebaseAuthError(error as FirebaseError).message};
         }
     };
 

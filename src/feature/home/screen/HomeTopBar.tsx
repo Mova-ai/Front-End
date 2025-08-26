@@ -1,0 +1,60 @@
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useTheme } from 'react-native-paper';
+import ThemeToggleButton from "../../../theme/ThemeToggleButton";
+
+type RootStackParamList = {
+    Home: undefined;
+    Profile: undefined;
+};
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+export default function HomeTopBar() {
+    const navigation = useNavigation<NavigationProp>();
+    const theme = useTheme();
+
+    return (
+        <View style={[styles.container, { backgroundColor: theme.colors.error}]}>
+
+            <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={styles.left}>
+                <Icon name="person" size={24} color={theme.colors.onPrimary} />
+            </TouchableOpacity>
+
+
+            <Text style={[styles.title, { color: theme.colors.onPrimary }]}>Inicio</Text>
+
+            <View style={styles.right}>
+                <ThemeToggleButton />
+            </View>
+
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        height: 56,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: 16,
+    },
+    left: {
+        flex: 1,
+        alignItems: "flex-start",
+    },
+    title: {
+        flex: 1,
+        textAlign: "center",
+        fontSize: 18,
+        fontWeight: "bold",
+    },
+    right: {
+        flex: 1,
+        alignItems: "flex-end",
+    },
+});
+

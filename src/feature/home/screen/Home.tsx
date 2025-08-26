@@ -3,6 +3,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
+import HomeTopBar from "./HomeTopBar";
 
 const Home = () => {
     const theme = useTheme();
@@ -17,6 +18,12 @@ const Home = () => {
     };
 
     return (
+
+
+        <View style={{ flex: 1 }}>
+            <HomeTopBar />
+
+
         <View
             style={{
                 flex: 1,
@@ -47,6 +54,7 @@ const Home = () => {
             >
                 Cerrar sesión
             </Button>
+        </View>
         </View>
     );
 };

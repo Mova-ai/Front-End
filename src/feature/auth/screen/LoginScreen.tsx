@@ -115,6 +115,13 @@ export default function LoginScreen() {
                                 value={value}
                                 error={!!errors.email}
                                 style={{marginBottom: 16, width: '100%'}}
+                                theme={{
+                                    colors: {
+                                        onSurface: theme.colors.onPrimary,
+                                        placeholder: theme.colors.primary,
+                                        primary: theme.colors.primary,
+                                    },
+                                }}
                                 right={
                                     value && !errors.email ? (
                                         <TextInput.Icon icon="check" color={theme.colors.success} />
@@ -152,6 +159,13 @@ export default function LoginScreen() {
                                 value={value}
                                 error={!!errors.password}
                                 style={{marginBottom: 8, width: '100%'}}
+                                theme={{
+                                    colors: {
+                                        onSurface: theme.colors.onPrimary,
+                                        placeholder: theme.colors.primary,
+                                        primary: theme.colors.primary,
+                                    },
+                                }}
                                 right={
                                     <TextInput.Icon
                                         icon={showPassword ? "eye-off" : "eye"}
@@ -171,14 +185,15 @@ export default function LoginScreen() {
                         variant="bodyMedium"
                         style={{textAlign: 'right', width: '100%', marginBottom: 24}}
                         onPress={handleRecoveryPassword}
+
                     >
-                        Forgot password?
+                        <Text style={{ fontWeight: '700', color: theme.colors.primary} }> Forgot password? </Text>
                     </Button>
 
                     <Button
                         mode="contained"
                         onPress={handleSubmit(onSubmit)}
-                        buttonColor={theme.colors.primary}
+                        buttonColor={theme.colors.onSurface}
                         textColor={theme.colors.onPrimary}
                         labelStyle={theme.fonts.headlineSmall}
                         style={{width: '100%', paddingVertical: 8}}
@@ -189,7 +204,7 @@ export default function LoginScreen() {
 
 
                 <View style={{alignItems:'center', gap: 16}}>
-                    <Text variant={"bodyLarge"}>
+                    <Text variant="bodyLarge"style={{ color: theme.colors.primary }}>
                         Or login with
                     </Text>
 
@@ -224,9 +239,9 @@ export default function LoginScreen() {
             {/*Don't have an account?*/}
             <View style={{justifyContent: 'center', alignItems:'center'}}>
                 <TouchableOpacity onPress={() => navigation.navigate(`/${routesPublic.register.name}`)}>
-                    <Text variant="bodyLarge" style={{ color: theme.colors.onSurface }}>
+                    <Text variant="bodyLarge" style={{ color: theme.colors.primary }}>
                         Already have an account?
-                        <Text style={{ fontWeight: '700', color: theme.colors.primary} }> Sign in</Text>
+                        <Text style={{ fontWeight: '700', color: theme.colors.onPrimary} }> Sign in</Text>
                     </Text>
                 </TouchableOpacity>
             </View>

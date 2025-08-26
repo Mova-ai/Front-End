@@ -17,14 +17,14 @@ export default function HomeTopBar() {
     const theme = useTheme();
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.colors.error}]}>
+        <View style={[styles.container, { backgroundColor: theme.colors.onSurface}]}>
 
             <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={styles.left}>
-                <Icon name="person" size={24} color={theme.colors.onPrimary} />
+                <Icon name="person" size={24} color={theme.colors.surface} />
             </TouchableOpacity>
 
 
-            <Text style={[styles.title, { color: theme.colors.onPrimary }]}>Inicio</Text>
+            <Text style={[styles.title, { color: theme.colors.surface }]}>Inicio</Text>
 
             <View style={styles.right}>
                 <ThemeToggleButton />

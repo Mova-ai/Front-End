@@ -53,8 +53,8 @@ const AuthEntry: React.FC = () => {
                             onPress={() => navigation.navigate(`${routesPublic.login.name}`)}
                             style={styles.button}
                             labelStyle={theme.fonts.headlineSmall}
-                            buttonColor={theme.colors.primary}
-                            textColor={theme.colors.onPrimary}
+                            buttonColor={theme.colors.onSurface}
+                            textColor={theme.colors.surface}
                         >
                             Sign In
                         </Button>
@@ -63,8 +63,8 @@ const AuthEntry: React.FC = () => {
                             mode="outlined"
                             labelStyle={theme.fonts.headlineSmall}
                             onPress={() => navigation.navigate(`${routesPublic.register.name}`)}
-                            style={[styles.button, {borderColor: theme.colors.primary}]}
-                            // textColor={theme.colors.onPrimary}
+                            style={[styles.button, {borderColor: theme.colors.onSurface}]}
+                            textColor={theme.colors.onSurface}
                         >
                             Create Account
                         </Button>

@@ -47,7 +47,7 @@ const Home = () => {
             <Button
                 mode="contained"
                 onPress={handleLogout}
-                buttonColor={theme.colors.error}
+                buttonColor={theme.colors.onSurface}
                 textColor={theme.colors.onPrimary}
                 style={{ width: '80%', height: 56, justifyContent: 'center' }}
                 labelStyle={{ fontSize: 16 }}

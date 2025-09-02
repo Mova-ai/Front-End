@@ -5,10 +5,8 @@ import {useForm, SubmitHandler, Controller} from 'react-hook-form';
 import LoginFormData from "../interface/LoginFormData";
 import { useNavigation } from '@react-navigation/native';
 
-import { getAuth, createUserWithEmailAndPassword } from '@react-native-firebase/auth';
 import {routesPublic} from "../../../routes/routes";
 import {routesPrivate} from "../../../routes/routes";
-import type {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {useAuth} from "../context/AuthContext";
 import AuthContextType from "../interface/AuthContextType";
 
@@ -17,17 +15,18 @@ import AuthContextType from "../interface/AuthContextType";
 export default function LoginScreen() {
 
     const theme = useTheme();
-    const { control, handleSubmit,getValues, formState: {errors}} = useForm<LoginFormData>();
+    const {control, handleSubmit, getValues, formState: {errors}} = useForm<LoginFormData>();
     const navigation = useNavigation();
-    const auth : AuthContextType = useAuth();
-
+    const auth: AuthContextType = useAuth();
 
 
     const onSubmit = async (data: LoginFormData) => {
         const result = await auth.login(data);
 
+
         if (result.isAuth) {
             console.log(result.message);
+
             navigation.navigate(routesPrivate.home.name);
         } else {
             console.log("Error de login", result.message);
@@ -53,7 +52,6 @@ export default function LoginScreen() {
     };
 
 
-
     const handleLoginWithGoogle = () => {
         console.log("Login con google")
 
@@ -62,6 +60,7 @@ export default function LoginScreen() {
 
     const [showPassword, setShowPassword] = useState(false);
 
+    // @ts-ignore
     return (
         <View style={{flexGrow: 1, justifyContent: 'center', backgroundColor: theme.colors.background}}>
 

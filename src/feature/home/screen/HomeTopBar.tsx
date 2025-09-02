@@ -4,6 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTheme } from 'react-native-paper';
 import ThemeToggleButton from "../../../theme/ThemeToggleButton";
+import {routesPrivate} from "../../../routes/routes";
+
 
 type RootStackParamList = {
     Home: undefined;
@@ -15,11 +17,11 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 export default function HomeTopBar() {
     const navigation = useNavigation<NavigationProp>();
     const theme = useTheme();
-
+    const profile: String = routesPrivate.profile.name;
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.onSurface}]}>
 
-            <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={styles.left}>
+            <TouchableOpacity onPress={() => navigation.navigate(profile)} style={styles.left}>
                 <Icon name="person" size={24} color={theme.colors.surface} />
             </TouchableOpacity>
 

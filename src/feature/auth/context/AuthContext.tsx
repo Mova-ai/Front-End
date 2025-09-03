@@ -6,17 +6,19 @@ import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    sendPasswordResetEmail, sendEmailVerification, updateProfile
+    sendPasswordResetEmail, sendEmailVerification, updateProfile, signOut
 } from '@react-native-firebase/auth';
 import {handleFirebaseAuthError} from "./FirebaseError";
-import LoginFormData from "../interface/LoginFormData";
 import {UsuarioInterface} from "../UserState";
 import {FirebaseError} from "firebase/app";
+
 
 export interface Formulario {
     email: string;
     password: string;
 }
+
+
 
 export interface ErrorAuth {
     isAuth: boolean;
@@ -24,12 +26,27 @@ export interface ErrorAuth {
 
 }
 
+export interface LoginResult {
+    isAuth: boolean;
+    message: string;
+    userData?: any;
+}
+
+interface AuthContextProps {
+    token: string | null;
+    setToken: (token: string | null) => void;
+}
+
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+
 
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const auth = getAuth();
     const [user, setUser] = useState<UsuarioInterface | null>(null);
+    const [token, setToken] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
 
@@ -56,7 +73,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const register = async (data: Formulario): Promise<ErrorAuth> => {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
-            await sendEmailVerification(userCredential.user);
+            await sendEmailVerification(auth.currentUser);
+            await signOut(auth)
 
             return {
                 isAuth: true,
@@ -68,18 +86,51 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
 
-    const login = async (data: Formulario): Promise<ErrorAuth> => {
+    const login = async (data: Formulario): Promise<LoginResult> => {
         try {
-            await signInWithEmailAndPassword(auth, data.email, data.password);
+
+            const {user}= await signInWithEmailAndPassword(auth, data.email, data.password);
+            const token = await user.getIdToken()
+            setToken(token);
+            console.log("esta es la linea del login",token);
+            if (!user.emailVerified){
+                await signOut(auth)
+                return {isAuth: false, message: "Verifica tu correo primero"};
+            }
+            const res =   await fetch("http://10.0.2.2:8080/user/login", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({})
+
+            });
+            if (!res.ok) {
+                const text = await res.text();
+                console.error("Error backend:", res.status, text);
+                return { isAuth: false, message: `Backend error ${res.status}` };
+            }
+
+            const userData: UsuarioInterface = await res.json();
+            setUser(userData);
 
             return {
                 isAuth: true,
                 message: 'Inicio de sesión exitoso.',
+                userData,
+
             };
         } catch (error) {
+            console.log("error en login",error);
             return handleFirebaseAuthError(error as FirebaseError);
+
         }
     };
+
+
+
+
 
 
     const recoveryPassword = async (email: string): Promise<ErrorAuth> => {
@@ -149,6 +200,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         <AuthContext.Provider
             value={{
                 user,
+                token,
                 register,
                 login,
                 logout,

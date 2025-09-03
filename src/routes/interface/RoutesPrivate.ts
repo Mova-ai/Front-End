@@ -13,6 +13,7 @@ import { Route } from "./route";
 
 export interface RoutesPrivate {
     home: Route;
+    profile: Route;
     // users: Route;
     // locals: Route;
     // book: Route;

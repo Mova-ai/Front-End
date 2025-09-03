@@ -21,3 +21,15 @@ export interface UsuarioInterface {
     photoURL?: string;
     isAuth: boolean;
 }
+
+
+export interface UserProfileDTO {
+    id: string;
+    email: string;
+    firstName: string | null;
+    lastName: string | null;
+    phone: string | null;
+    avatarUrl: string | null;
+    birthday: string | null;
+    bio: string | null;
+}

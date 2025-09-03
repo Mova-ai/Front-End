@@ -11,4 +11,7 @@ export default interface AuthContextType {
     recoveryPassword: (email: string) => Promise<ErrorAuth>;
     verifiqueEmail: () => Promise<ErrorAuth>;
     updateUserProfile: (displayName: string, photoURL?: string) => Promise<ErrorAuth>;
+    token: string | null;
+
+
 }

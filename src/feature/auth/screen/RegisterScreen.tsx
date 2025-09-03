@@ -96,6 +96,13 @@ const RegisterScreen = () => {
                                 value={value}
                                 error={!!errors.email}
                                 style={{marginBottom: 16, width: '100%'}}
+                                theme={{
+                                    colors: {
+                                        onSurface: theme.colors.onPrimary,
+                                        placeholder: theme.colors.primary,
+                                        primary: theme.colors.primary,
+                                    },
+                                }}
                                 right={
                                     value && !errors.email ? (
                                         <TextInput.Icon icon="check" color={theme.colors.success} />
@@ -136,6 +143,13 @@ const RegisterScreen = () => {
                                 value={value}
                                 error={!!errors.password}
                                 style={{marginBottom: 16, width: '100%'}}
+                                theme={{
+                                    colors: {
+                                        onSurface: theme.colors.onPrimary,
+                                        placeholder: theme.colors.primary,
+                                        primary: theme.colors.primary,
+                                    },
+                                }}
                                 right={
                                     <TextInput.Icon
                                         icon={showPassword ? "eye-off" : "eye"}

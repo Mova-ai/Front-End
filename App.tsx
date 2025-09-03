@@ -9,6 +9,7 @@ import SafeAreaView from "./src/utils/SafeAreaView"
 import {NavigationContainer} from "@react-navigation/native";
 
 
+
 export default function App() {
     const theme = useTheme();
 
@@ -25,7 +26,6 @@ export default function App() {
                         </SafeAreaProvider>
                     </View>
                 </NavigationContainer>
-
             </ThemeProvider>
         </AuthProvider>
     );

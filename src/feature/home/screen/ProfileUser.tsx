@@ -4,6 +4,12 @@ import {useAuth} from "../../auth/context/AuthContext";
 import {useEffect, useState} from "react";
 import {UserProfileDTO} from "../../auth/UserState";
 import {getUserProfile} from "../../auth/context/Api";
+import { useNavigation } from "@react-navigation/native";
+import {routesPrivate} from "../../../routes/routes";
+
+
+
+
 
 
 const ProfileUser = () => {
@@ -11,6 +17,7 @@ const ProfileUser = () => {
 
     const { token } = useAuth();
     const [profile, setProfile] = useState<UserProfileDTO | null>(null);
+    const navigation = useNavigation();
 
 
 
@@ -122,7 +129,7 @@ const ProfileUser = () => {
                     </View>
 
                     <TouchableOpacity
-                        onPress={() => {}}
+                        onPress={() => {navigation.navigate(routesPrivate.editProfile.name,{profile})}}
                         style={{
                             backgroundColor: theme.colors.outline,
                             paddingVertical: 6,

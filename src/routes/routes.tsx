@@ -56,6 +56,7 @@ import {RoutesPrivate as Rprivate} from "./interface/RoutesPrivate";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import AuthEntry from "../feature/home/screen/AuthEntry";
 import ProfileUser from "../feature/home/screen/ProfileUser";
+import EditProfile from "../feature/home/screen/EditProfile";
 
 /**
  * Rutas públicas de la aplicación
@@ -78,7 +79,8 @@ export const routesPublic: Rpublic = {
  */
 export const routesPrivate: Rprivate = {
     home: {name: 'Home', component: Home},
-    profile: {name: 'Profile', component: ProfileUser}
+    profile: {name: 'Profile', component: ProfileUser},
+    editProfile: {name: 'EditProfile', component: EditProfile}
     // users: Route;
     // locals: Route;
     // book: Route;

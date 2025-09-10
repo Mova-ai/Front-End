@@ -4,6 +4,8 @@ import { Image, ScrollView, Text, TouchableOpacity, View, StyleSheet } from "rea
 import {Controller, useForm} from "react-hook-form";
 import {updateUserProfile} from "../../auth/context/Api";
 import {useAuth} from "../../auth/context/AuthContext";
+import {UserProfileDTO} from "../../auth/UserState";
+import {routesPrivate} from "../../../routes/routes";
 
 
 const EditProfile = ({ navigation, route }) => {
@@ -27,7 +29,9 @@ const EditProfile = ({ navigation, route }) => {
         try {
             const updatedProfile = await updateUserProfile(token!, data);
             console.log("Perfil actualizado:", updatedProfile);
-            navigation.goBack();
+
+            navigation.replace(routesPrivate.profile.name);
+
         } catch (error) {
             console.error("Error al actualizar perfil:", error);
         }
@@ -105,7 +109,7 @@ const EditProfile = ({ navigation, route }) => {
             <View style={styles.container}>
 
 
-                {/* Email */}
+
                 <Text style={styles.label}>Email</Text>
                 <Controller
                     control={control}
@@ -121,7 +125,7 @@ const EditProfile = ({ navigation, route }) => {
                     )}
                 />
 
-                {/* Nombre */}
+
                 <Text style={styles.label}>Nombre</Text>
                 <Controller
                     control={control}
@@ -132,7 +136,7 @@ const EditProfile = ({ navigation, route }) => {
                 />
 
 
-                {/* Apellido */}
+
                 <Text style={styles.label}>Apellido</Text>
                 <Controller
                     control={control}
@@ -143,7 +147,7 @@ const EditProfile = ({ navigation, route }) => {
                 />
 
 
-                {/* Teléfono */}
+
                 <Text style={styles.label}>Teléfono</Text>
                 <Controller
                     control={control}
@@ -159,7 +163,7 @@ const EditProfile = ({ navigation, route }) => {
                 />
 
 
-                {/* Bio */}
+
                 <Text style={styles.label}>Bio</Text>
                 <Controller
                     control={control}
@@ -175,7 +179,7 @@ const EditProfile = ({ navigation, route }) => {
                 />
 
 
-                {/* Botón Guardar */}
+
                 <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
                     <Text style={styles.buttonText}>Guardar Cambios</Text>
                 </TouchableOpacity>

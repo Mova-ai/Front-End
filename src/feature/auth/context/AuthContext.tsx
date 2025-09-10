@@ -92,6 +92,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const {user}= await signInWithEmailAndPassword(auth, data.email, data.password);
             const token = await user.getIdToken()
             setToken(token);
+
             console.log("esta es la linea del login",token);
             if (!user.emailVerified){
                 await signOut(auth)

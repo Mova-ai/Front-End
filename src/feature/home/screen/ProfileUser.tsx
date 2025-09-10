@@ -129,7 +129,7 @@ const ProfileUser = () => {
                     </View>
 
                     <TouchableOpacity
-                        onPress={() => {navigation.navigate(routesPrivate.editProfile.name,{profile})}}
+                        onPress={() => navigation.replace(routesPrivate.editProfile.name, { profile })}
                         style={{
                             backgroundColor: theme.colors.outline,
                             paddingVertical: 6,
